@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
 	def new
 	end
 
@@ -6,6 +7,10 @@ class SessionsController < ApplicationController
 
 		user = User.find_by_username(params[:username])
 		if user && user.authenticate(params[:password])
+
+			user.login_times = user.login_times + 1
+			user.save
+			
 			session[:user_id] = user.id
 			redirect_to root_url, notice: "Logged in!"
 		else
